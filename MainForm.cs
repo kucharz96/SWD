@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SWD.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +28,16 @@ namespace SWD
             if(openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 Operator.LoadData(openFileDialog1.FileName);
+                RefreshTable();
+            }
+        }
+
+        private void zamianaDanychTekstowychNaNumeryczneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeToNumber form = new ChangeToNumber();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Operator.ChangeToNumber(form.ColumnName);
                 RefreshTable();
             }
         }
