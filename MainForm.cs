@@ -57,5 +57,25 @@ namespace SWD
             Chart3D form = new Chart3D();
             form.Show();
         }
+
+        private void najmniejszychToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelectSpecificsData form = new SelectSpecificsData();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Operator.SelectSpecificsData(dataGridView1,form.ColumnName,form.Percent);
+                RefreshTable();
+            }
+        }
+
+        private void największychToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelectSpecificsData form = new SelectSpecificsData();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Operator.SelectSpecificsData(dataGridView1,form.ColumnName, form.Percent,true);
+                RefreshTable();
+            }
+        }
     }
 }

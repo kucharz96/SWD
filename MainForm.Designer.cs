@@ -31,12 +31,15 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalizacjaZmiennychRzeczywistychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wykres3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.najmniejszychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.największychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -68,27 +71,13 @@
             this.openToolStripMenuItem.Text = "Open file...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "txt files (*.txt)|*.txt";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 28);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(800, 422);
-            this.dataGridView1.TabIndex = 1;
-            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem,
             this.normalizacjaZmiennychRzeczywistychToolStripMenuItem,
-            this.wykres3DToolStripMenuItem});
+            this.wykres3DToolStripMenuItem,
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -113,6 +102,44 @@
             this.wykres3DToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
             this.wykres3DToolStripMenuItem.Text = "Wykres 3D";
             this.wykres3DToolStripMenuItem.Click += new System.EventHandler(this.wykres3DToolStripMenuItem_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "txt files (*.txt)|*.txt";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 28);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.Size = new System.Drawing.Size(800, 422);
+            this.dataGridView1.TabIndex = 1;
+            // 
+            // zaznaczenieCzęściZmiennychToolStripMenuItem
+            // 
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.najmniejszychToolStripMenuItem,
+            this.największychToolStripMenuItem});
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Name = "zaznaczenieCzęściZmiennychToolStripMenuItem";
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Text = "Zaznaczenie części zmiennych";
+            // 
+            // najmniejszychToolStripMenuItem
+            // 
+            this.najmniejszychToolStripMenuItem.Name = "najmniejszychToolStripMenuItem";
+            this.najmniejszychToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.najmniejszychToolStripMenuItem.Text = "Najmniejszych";
+            this.najmniejszychToolStripMenuItem.Click += new System.EventHandler(this.najmniejszychToolStripMenuItem_Click);
+            // 
+            // największychToolStripMenuItem
+            // 
+            this.największychToolStripMenuItem.Name = "największychToolStripMenuItem";
+            this.największychToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.największychToolStripMenuItem.Text = "Największych";
+            this.największychToolStripMenuItem.Click += new System.EventHandler(this.największychToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -143,6 +170,9 @@
         private System.Windows.Forms.ToolStripMenuItem zamianaDanychTekstowychNaNumeryczneToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem normalizacjaZmiennychRzeczywistychToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wykres3DToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zaznaczenieCzęściZmiennychToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem najmniejszychToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem największychToolStripMenuItem;
     }
 }
 

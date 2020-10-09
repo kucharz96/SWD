@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SWD
 {
@@ -143,6 +144,38 @@ namespace SWD
 
                 row[newNameCol] = newVal;
             }
+        }
+
+        public static void SelectSpecificsData(DataGridView gridView,string columnName,int percentOfData,bool biggerData = false)
+        {
+            var values = ConvertToListDouble(columnName);
+            if (biggerData)
+            {
+                values = values.OrderByDescending(i => i).ToList();
+            }
+            else
+            {
+                values = values.OrderBy(i => i).ToList();
+            }
+            float per = (float)percentOfData / 100;
+
+            int takeCountElements = (int)(values.Count * per);
+            values = values.Take(takeCountElements).ToList();
+            int ro = 0;
+            foreach (DataRow row in Dt.Rows)
+            {
+                double val = Convert.ToDouble(row[columnName]);
+                if (values.Contains(val))
+                {
+                    gridView.Rows[ro].Selected = true;
+                }
+                else
+                {
+                    gridView.Rows[ro].Selected = false;
+                }
+                ro++;
+            }
+
         }
     }
 }
