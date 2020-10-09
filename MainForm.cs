@@ -41,5 +41,21 @@ namespace SWD
                 RefreshTable();
             }
         }
+
+        private void normalizacjaZmiennychRzeczywistychToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NormalizeData form = new NormalizeData();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Operator.NormalizeData(form.ColumnName);
+                RefreshTable();
+            }
+        }
+
+        private void wykres3DToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Chart3D form = new Chart3D();
+            form.Show();
+        }
     }
 }

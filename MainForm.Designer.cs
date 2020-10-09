@@ -35,6 +35,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.normalizacjaZmiennychRzeczywistychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wykres3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -84,7 +86,9 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem});
+            this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem,
+            this.normalizacjaZmiennychRzeczywistychToolStripMenuItem,
+            this.wykres3DToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -95,6 +99,20 @@
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem.Text = "Zamiana danych tekstowych na numeryczne";
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem.Click += new System.EventHandler(this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem_Click);
+            // 
+            // normalizacjaZmiennychRzeczywistychToolStripMenuItem
+            // 
+            this.normalizacjaZmiennychRzeczywistychToolStripMenuItem.Name = "normalizacjaZmiennychRzeczywistychToolStripMenuItem";
+            this.normalizacjaZmiennychRzeczywistychToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.normalizacjaZmiennychRzeczywistychToolStripMenuItem.Text = "Normalizacja zmiennych rzeczywistych";
+            this.normalizacjaZmiennychRzeczywistychToolStripMenuItem.Click += new System.EventHandler(this.normalizacjaZmiennychRzeczywistychToolStripMenuItem_Click);
+            // 
+            // wykres3DToolStripMenuItem
+            // 
+            this.wykres3DToolStripMenuItem.Name = "wykres3DToolStripMenuItem";
+            this.wykres3DToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.wykres3DToolStripMenuItem.Text = "Wykres 3D";
+            this.wykres3DToolStripMenuItem.Click += new System.EventHandler(this.wykres3DToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -123,6 +141,8 @@
         public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zamianaDanychTekstowychNaNumeryczneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem normalizacjaZmiennychRzeczywistychToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wykres3DToolStripMenuItem;
     }
 }
 
