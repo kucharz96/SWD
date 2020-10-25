@@ -35,11 +35,17 @@
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.normalizacjaZmiennychRzeczywistychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wykres3DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.zaznaczenieCzęściZmiennychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.najmniejszychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.największychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zmianaPrzedziałuWartościToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wykres2DToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.histogramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zmienneDyskretneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zmienneRzeczywisteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -77,7 +83,11 @@
             this.zamianaDanychTekstowychNaNumeryczneToolStripMenuItem,
             this.normalizacjaZmiennychRzeczywistychToolStripMenuItem,
             this.wykres3DToolStripMenuItem,
-            this.zaznaczenieCzęściZmiennychToolStripMenuItem});
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem,
+            this.dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem,
+            this.zmianaPrzedziałuWartościToolStripMenuItem,
+            this.wykres2DToolStripMenuItem,
+            this.histogramToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -103,6 +113,50 @@
             this.wykres3DToolStripMenuItem.Text = "Wykres 3D";
             this.wykres3DToolStripMenuItem.Click += new System.EventHandler(this.wykres3DToolStripMenuItem_Click);
             // 
+            // zaznaczenieCzęściZmiennychToolStripMenuItem
+            // 
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.najmniejszychToolStripMenuItem,
+            this.największychToolStripMenuItem});
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Name = "zaznaczenieCzęściZmiennychToolStripMenuItem";
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Text = "Zaznaczenie części zmiennych";
+            // 
+            // najmniejszychToolStripMenuItem
+            // 
+            this.najmniejszychToolStripMenuItem.Name = "najmniejszychToolStripMenuItem";
+            this.najmniejszychToolStripMenuItem.Size = new System.Drawing.Size(187, 26);
+            this.najmniejszychToolStripMenuItem.Text = "Najmniejszych";
+            this.najmniejszychToolStripMenuItem.Click += new System.EventHandler(this.najmniejszychToolStripMenuItem_Click);
+            // 
+            // największychToolStripMenuItem
+            // 
+            this.największychToolStripMenuItem.Name = "największychToolStripMenuItem";
+            this.największychToolStripMenuItem.Size = new System.Drawing.Size(187, 26);
+            this.największychToolStripMenuItem.Text = "Największych";
+            this.największychToolStripMenuItem.Click += new System.EventHandler(this.największychToolStripMenuItem_Click);
+            // 
+            // dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem
+            // 
+            this.dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem.Name = "dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem";
+            this.dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem.Text = "Dyskretyzacja zmiennych rzeczywistych";
+            this.dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem.Click += new System.EventHandler(this.dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem_Click);
+            // 
+            // zmianaPrzedziałuWartościToolStripMenuItem
+            // 
+            this.zmianaPrzedziałuWartościToolStripMenuItem.Name = "zmianaPrzedziałuWartościToolStripMenuItem";
+            this.zmianaPrzedziałuWartościToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.zmianaPrzedziałuWartościToolStripMenuItem.Text = "Zmiana przedziału wartości";
+            this.zmianaPrzedziałuWartościToolStripMenuItem.Click += new System.EventHandler(this.zmianaPrzedziałuWartościToolStripMenuItem_Click);
+            // 
+            // wykres2DToolStripMenuItem
+            // 
+            this.wykres2DToolStripMenuItem.Name = "wykres2DToolStripMenuItem";
+            this.wykres2DToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.wykres2DToolStripMenuItem.Text = "Wykres 2D";
+            this.wykres2DToolStripMenuItem.Click += new System.EventHandler(this.wykres2DToolStripMenuItem_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -118,28 +172,28 @@
             this.dataGridView1.Size = new System.Drawing.Size(800, 422);
             this.dataGridView1.TabIndex = 1;
             // 
-            // zaznaczenieCzęściZmiennychToolStripMenuItem
+            // histogramToolStripMenuItem
             // 
-            this.zaznaczenieCzęściZmiennychToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.najmniejszychToolStripMenuItem,
-            this.największychToolStripMenuItem});
-            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Name = "zaznaczenieCzęściZmiennychToolStripMenuItem";
-            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
-            this.zaznaczenieCzęściZmiennychToolStripMenuItem.Text = "Zaznaczenie części zmiennych";
+            this.histogramToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zmienneDyskretneToolStripMenuItem,
+            this.zmienneRzeczywisteToolStripMenuItem});
+            this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
+            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.histogramToolStripMenuItem.Text = "Histogram";
             // 
-            // najmniejszychToolStripMenuItem
+            // zmienneDyskretneToolStripMenuItem
             // 
-            this.najmniejszychToolStripMenuItem.Name = "najmniejszychToolStripMenuItem";
-            this.najmniejszychToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.najmniejszychToolStripMenuItem.Text = "Najmniejszych";
-            this.najmniejszychToolStripMenuItem.Click += new System.EventHandler(this.najmniejszychToolStripMenuItem_Click);
+            this.zmienneDyskretneToolStripMenuItem.Name = "zmienneDyskretneToolStripMenuItem";
+            this.zmienneDyskretneToolStripMenuItem.Size = new System.Drawing.Size(229, 26);
+            this.zmienneDyskretneToolStripMenuItem.Text = "Zmienne dyskretne";
+            this.zmienneDyskretneToolStripMenuItem.Click += new System.EventHandler(this.zmienneDyskretneToolStripMenuItem_Click);
             // 
-            // największychToolStripMenuItem
+            // zmienneRzeczywisteToolStripMenuItem
             // 
-            this.największychToolStripMenuItem.Name = "największychToolStripMenuItem";
-            this.największychToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.największychToolStripMenuItem.Text = "Największych";
-            this.największychToolStripMenuItem.Click += new System.EventHandler(this.największychToolStripMenuItem_Click);
+            this.zmienneRzeczywisteToolStripMenuItem.Name = "zmienneRzeczywisteToolStripMenuItem";
+            this.zmienneRzeczywisteToolStripMenuItem.Size = new System.Drawing.Size(229, 26);
+            this.zmienneRzeczywisteToolStripMenuItem.Text = "Zmienne rzeczywiste";
+            this.zmienneRzeczywisteToolStripMenuItem.Click += new System.EventHandler(this.zmienneRzeczywisteToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -173,6 +227,12 @@
         private System.Windows.Forms.ToolStripMenuItem zaznaczenieCzęściZmiennychToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem najmniejszychToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem największychToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zmianaPrzedziałuWartościToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wykres2DToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem histogramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zmienneDyskretneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zmienneRzeczywisteToolStripMenuItem;
     }
 }
 

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace SWD
 {
     public partial class MainForm : Form
-    { 
+    {
         public MainForm()
         {
             InitializeComponent();
@@ -25,7 +25,7 @@ namespace SWD
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 Operator.LoadData(openFileDialog1.FileName);
                 RefreshTable();
@@ -63,7 +63,7 @@ namespace SWD
             SelectSpecificsData form = new SelectSpecificsData();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Operator.SelectSpecificsData(dataGridView1,form.ColumnName,form.Percent);
+                Operator.SelectSpecificsData(dataGridView1, form.ColumnName, form.Percent);
                 RefreshTable();
             }
         }
@@ -73,9 +73,47 @@ namespace SWD
             SelectSpecificsData form = new SelectSpecificsData();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Operator.SelectSpecificsData(dataGridView1,form.ColumnName, form.Percent,true);
+                Operator.SelectSpecificsData(dataGridView1, form.ColumnName, form.Percent, true);
                 RefreshTable();
             }
+        }
+
+        private void dyskretyzacjaZmiennychRzeczywistychToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DiscretizeData form = new DiscretizeData();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Operator.DiscretizeData(form.ColumnName, form.SectionNumber);
+                RefreshTable();
+            }
+        }
+
+        private void zmianaPrzedziałuWartościToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeRange form = new ChangeRange();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                Operator.ChangeRange(form.ColumnName, form.FromRange, form.ToRange);
+                RefreshTable();
+            }
+        }
+
+        private void wykres2DToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Chart2D form = new Chart2D();
+            form.Show();
+        }
+
+        private void zmienneRzeczywisteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RealHistogram form = new RealHistogram();
+            form.Show();
+        }
+
+        private void zmienneDyskretneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DiscretizeHistogram form = new DiscretizeHistogram();
+            form.Show();
         }
     }
 }

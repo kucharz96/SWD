@@ -35,9 +35,9 @@ namespace SWD
         public static List<string> GetRealColumns()
         {
             List<string> realColumns = new List<string>();
-            for(int col= 0; col < Dt.Columns.Count; col++)
+            for (int col = 0; col < Dt.Columns.Count; col++)
             {
-                if(double.TryParse((string)Dt.Rows[0][col],out double a))
+                if (double.TryParse((string)Dt.Rows[0][col], out double a))
                 {
                     realColumns.Add(Dt.Columns[col].ColumnName);
                 }
@@ -63,11 +63,17 @@ namespace SWD
             var valuesList = ConvertToListDouble(colName);
             var avg = valuesList.Average();
             double sum = 0;
-            foreach(var value in valuesList)
+            foreach (var value in valuesList)
             {
                 sum += Math.Pow((value - avg), 2);
             }
             return Math.Sqrt(sum / valuesList.Count);
+        }
+
+        public static double ConvertRange(double originalStart, double originalEnd, double newStart, double newEnd, double value)
+        {
+            double scale = (newEnd - newStart) / (originalEnd - originalStart);
+            return (newStart + ((value - originalStart) * scale));
         }
 
 
@@ -80,7 +86,7 @@ namespace SWD
         {
             Dt = new DataTable();
             System.IO.StreamReader file = new System.IO.StreamReader(filePath);
-            
+
             string newline;
             while ((newline = file.ReadLine()) != null)
             {
@@ -116,13 +122,13 @@ namespace SWD
                 .AsEnumerable()
                 .Select(row => row.Field<string>(columnName)).Distinct().ToList();
             int cont = 0;
-            foreach(string val in allValuesFromColumn)
+            foreach (string val in allValuesFromColumn)
             {
                 valueNumbers.Add(val, ++cont);
             }
             string newNameCol = columnName + "_ctn";
             Dt.Columns.Add(newNameCol);
-            foreach(DataRow row in Dt.Rows)
+            foreach (DataRow row in Dt.Rows)
             {
                 row[newNameCol] = valueNumbers[(string)row[columnName]];
             }
@@ -146,7 +152,47 @@ namespace SWD
             }
         }
 
-        public static void SelectSpecificsData(DataGridView gridView,string columnName,int percentOfData,bool biggerData = false)
+        public static void DiscretizeData(string columnName, int sections)
+        {
+            double min = GetMinValueFormColumn(columnName);
+            double max = GetMaxValueFormColumn(columnName);
+            double diff = (max - min) / sections;
+            double pom = min;
+            string newNameCol = columnName + "_dd";
+            Dt.Columns.Add(newNameCol);
+            for (int counter = 1; pom < max; counter++)
+            {
+                foreach (DataRow row in Dt.Rows)
+                {
+                    double val = Convert.ToDouble(row[columnName]);
+                    if (((val >= pom && val < pom + diff)) || ((pom + diff * 2) > max && val == max))
+                    {
+                        row[newNameCol] = counter;
+
+                    }
+
+
+                }
+                pom = pom + diff;
+            }
+
+        }
+
+        public static void ChangeRange(string columnName, double a, double b)
+        {
+            double min = GetMinValueFormColumn(columnName);
+            double max = GetMaxValueFormColumn(columnName);
+            string newNameCol = columnName + "_cr";
+            Dt.Columns.Add(newNameCol);
+            foreach (DataRow row in Dt.Rows)
+            {
+                double val = Convert.ToDouble(row[columnName]);
+                row[newNameCol] = ConvertRange(min, max, a, b, val);
+            }
+
+        }
+
+        public static void SelectSpecificsData(DataGridView gridView, string columnName, int percentOfData, bool biggerData = false)
         {
             var values = ConvertToListDouble(columnName);
             if (biggerData)

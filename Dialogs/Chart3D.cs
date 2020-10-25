@@ -28,24 +28,14 @@ namespace SWD.Dialogs
         {
             var ca = chart1.ChartAreas[0];
             ca.Area3DStyle.Enable3D = true;
-            ca.AxisX.Minimum = -10;
-            ca.AxisY.Minimum = -10;
-            ca.AxisX.Maximum = 10;
-            ca.AxisY.Maximum = 10;
-            ca.AxisX.Interval = 10;
-            ca.AxisY.Interval = 10;
             ca.AxisX.Title = "X";
             ca.AxisY.Title = "Y";
-            ca.AxisX.MajorGrid.Interval = 10;
-            ca.AxisY.MajorGrid.Interval = 10;
             ca.AxisX.MinorGrid.Enabled = true;
             ca.AxisY.MinorGrid.Enabled = true;
-            ca.AxisX.MinorGrid.Interval = 10;
-            ca.AxisY.MinorGrid.Interval = 10;
             ca.AxisX.MinorGrid.LineColor = Color.LightSlateGray;
             ca.AxisY.MinorGrid.LineColor = Color.LightSlateGray;
 
-            
+
         }
 
         void AddData()
@@ -78,7 +68,7 @@ namespace SWD.Dialogs
                 {
                     string className = Operator.Dt.Rows[count].Field<string>((string)comboBox4.SelectedItem);
 
-                    AddXY3d(chart1.Series.Where(i=>i.Name == className).FirstOrDefault(), XValues[count], YValues[count], ZValues[count]);
+                    AddXY3d(chart1.Series.Where(i => i.Name == className).FirstOrDefault(), XValues[count], YValues[count], ZValues[count]);
                 }
             }
         }

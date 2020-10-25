@@ -47,11 +47,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dialogs\ChangeRange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ChangeRange.Designer.cs">
+      <DependentUpon>ChangeRange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Chart2D.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\Chart2D.Designer.cs">
+      <DependentUpon>Chart2D.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\Chart3D.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Dialogs\Chart3D.Designer.cs">
       <DependentUpon>Chart3D.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DiscretizeData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\DiscretizeData.Designer.cs">
+      <DependentUpon>DiscretizeData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DiscretizeHistogram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\DiscretizeHistogram.Designer.cs">
+      <DependentUpon>DiscretizeHistogram.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\NormalizeData.cs">
       <SubType>Form</SubType>
@@ -64,6 +88,12 @@
     </Compile>
     <Compile Include="Dialogs\ChangeToNumber.Designer.cs">
       <DependentUpon>ChangeToNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\RealHistogram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RealHistogram.Designer.cs">
+      <DependentUpon>RealHistogram.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\SelectSpecificsData.cs">
       <SubType>Form</SubType>
@@ -80,14 +110,29 @@
     <Compile Include="Operator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Dialogs\ChangeRange.resx">
+      <DependentUpon>ChangeRange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\Chart2D.resx">
+      <DependentUpon>Chart2D.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\Chart3D.resx">
       <DependentUpon>Chart3D.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DiscretizeData.resx">
+      <DependentUpon>DiscretizeData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DiscretizeHistogram.resx">
+      <DependentUpon>DiscretizeHistogram.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\NormalizeData.resx">
       <DependentUpon>NormalizeData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ChangeToNumber.resx">
       <DependentUpon>ChangeToNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RealHistogram.resx">
+      <DependentUpon>RealHistogram.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\SelectSpecificsData.resx">
       <DependentUpon>SelectSpecificsData.cs</DependentUpon>
