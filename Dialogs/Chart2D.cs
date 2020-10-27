@@ -41,16 +41,13 @@ namespace SWD.Dialogs
 
             if (comboBox1.SelectedItem != null || comboBox2.SelectedItem != null)
             {
-
-
-                var XValues = Operator.ConvertToListDouble(comboBox1.SelectedItem.ToString());
-                var YValues = Operator.ConvertToListDouble(comboBox2.SelectedItem.ToString());
-
-                for (int count = 0; count < Operator.Dt.Rows.Count; count++)
+                foreach (DataRow row in Operator.Dt.Rows)
                 {
-                    string className = Operator.Dt.Rows[count].Field<string>((string)comboBox4.SelectedItem);
-                    chart1.Series.Where(i => i.Name == className).FirstOrDefault().Points.AddXY(XValues[count], YValues[count]);
+                    var className = row[(string)comboBox4.SelectedItem];
+                    double x = double.Parse((string)row[(string)comboBox1.SelectedItem]);
+                    double y = double.Parse((string)row[(string)comboBox2.SelectedItem]);
 
+                    chart1.Series.Where(i => i.Name == (string)className).FirstOrDefault().Points.AddXY(x, y);
                 }
             }
         }

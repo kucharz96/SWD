@@ -60,6 +60,9 @@ namespace SWD.Dialogs
             {
 
 
+
+
+
                 var XValues = Operator.ConvertToListDouble(comboBox1.SelectedItem.ToString());
                 var YValues = Operator.ConvertToListDouble(comboBox2.SelectedItem.ToString());
                 var ZValues = Operator.ConvertToListDouble(comboBox3.SelectedItem.ToString());
