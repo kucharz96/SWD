@@ -14,6 +14,35 @@ namespace SWD
 
         #region HelpersMethod
 
+        public static double CalculateMetrics(int row, int rowToCount, MetricsEnum metricsEnum)  
+        {
+            switch (metricsEnum)
+            {
+                case MetricsEnum.Manhattan:
+                    return ManhattanMetrics(row, rowToCount);
+                case MetricsEnum.Euclides:
+                    return EuclidesMetrics(row, rowToCount);
+                case MetricsEnum.Czebyszew:
+                    return CzebyszewMetrics(row, rowToCount);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+
+
+        public static List<string> GetColumnsWithoutLast()
+        {
+            List<string> columns = new List<string>();
+            for (int col = 0; col < Dt.Columns.Count-1; col++)
+            {
+               
+               columns.Add(Dt.Columns[col].ColumnName);
+                
+            }
+            return columns;
+        }
+
         public static List<double> ConvertToListDouble(string columnName)
         {
             return Dt
@@ -50,7 +79,7 @@ namespace SWD
             List<string> stringColumns = new List<string>();
             for (int col = 0; col < Dt.Columns.Count; col++)
             {
-                if (!double.TryParse((string)Dt.Rows[0][col], out double a))
+                if (!double.TryParse((string)Dt.Rows[0][col], out double a) || col == Dt.Columns.Count-1)
                 {
                     stringColumns.Add(Dt.Columns[col].ColumnName);
                 }
@@ -81,8 +110,8 @@ namespace SWD
 
         #endregion
 
-
-        public static void LoadData(string filePath)
+        #region BasicOperations
+        public static void LoadData(string filePath , bool withoutColumn = false)
         {
             Dt = new DataTable();
             System.IO.StreamReader file = new System.IO.StreamReader(filePath);
@@ -95,9 +124,27 @@ namespace SWD
                 string[] values = newline.Trim().Split('\t');
                 if (Dt.Columns.Count == 0)
                 {
-                    foreach (string c in values)
+                    if (withoutColumn)
                     {
-                        Dt.Columns.Add(c);
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            Dt.Columns.Add((i + 1).ToString());
+                        }
+                        DataRow dr = Dt.NewRow();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            dr[i] = values[i].Replace('.',',');
+                        }
+                        Dt.Rows.Add(dr);
+
+                    }
+                    else
+                    {
+                        foreach (string c in values)
+                        {
+                            Dt.Columns.Add(c);
+                        }
                     }
                 }
                 else
@@ -106,7 +153,7 @@ namespace SWD
 
                     for (int i = 0; i < values.Length; i++)
                     {
-                        dr[i] = values[i];
+                        dr[i] = values[i].Replace('.', ',');
                     }
                     Dt.Rows.Add(dr);
                 }
@@ -178,6 +225,9 @@ namespace SWD
 
         }
 
+
+
+
         public static void ChangeRange(string columnName, double a, double b)
         {
             double min = GetMinValueFormColumn(columnName);
@@ -223,5 +273,153 @@ namespace SWD
             }
 
         }
+
+
+
+
+        #endregion
+
+        #region Metrics
+
+        public static double EuclidesMetrics(int row,int rowToCount)
+        {
+            double metrics = 0;
+            foreach(string column in GetColumnsWithoutLast())
+            {
+                var aaa = Dt.Rows[row][column];
+                double firstVal = Convert.ToDouble(Dt.Rows[row][column]);
+                double secondVal = Convert.ToDouble(Dt.Rows[rowToCount][column]);
+
+                metrics += Math.Pow(firstVal - secondVal, 2);
+
+            }
+            
+            return Math.Sqrt(metrics);
+        }
+
+        public static double ManhattanMetrics(int row, int rowToCount)
+        {
+            double metrics = 0;
+            foreach (string column in GetColumnsWithoutLast())
+            {
+                double firstVal = Convert.ToDouble(Dt.Rows[row][column]);
+                double secondVal = Convert.ToDouble(Dt.Rows[rowToCount][column]);
+
+                metrics += Math.Abs(firstVal - secondVal);
+
+            }
+
+            return metrics;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        public static double CzebyszewMetrics(int row, int rowToCount)
+        {
+            double max = 0;
+            foreach (string column in GetColumnsWithoutLast())
+            {
+                double firstVal = Convert.ToDouble(Dt.Rows[row][column]);
+                double secondVal = Convert.ToDouble(Dt.Rows[rowToCount][column]);
+                
+                double diff = Math.Abs(firstVal - secondVal);
+                if (max < diff)
+                {
+                    max = diff;
+                }
+
+            }
+
+            return max;
+        }
+
+        
+
+
+        #endregion
+
+
+        #region KNNClasification
+
+
+
+        public static void KNNClasifications(int currRow, int k, MetricsEnum metricsEnum)
+        {
+            var distance = KNNClasificationDistances(currRow, metricsEnum);
+            string newVariable = KNNPredictVariable(distance, k);
+            Dt.Rows[currRow][Dt.Columns[Dt.Columns.Count - 1]] = newVariable;
+        }
+
+
+
+
+        public static Dictionary<int, KNNValuePair> KNNClasificationDistances(int currRow, MetricsEnum metricsEnum)
+        {
+            Dictionary<int,KNNValuePair> distanses = new Dictionary<int, KNNValuePair>();
+            for(int a=0;a<Dt.Rows.Count;a++)
+            {
+                if(a != currRow)
+                {
+                    double metrics = CalculateMetrics(a, currRow, metricsEnum);
+
+                    distanses.Add(a, new KNNValuePair {
+                        Value = (string)Dt.Rows[a][Dt.Columns[Dt.Columns.Count - 1]],
+                        Weight = metrics
+                    });
+                }
+            }
+            return distanses;
+        }
+
+
+        public static string KNNPredictVariable(Dictionary<int, KNNValuePair> distanses,int k)
+        {
+            List<string> listOfNearestDistanseDecisions = distanses.OrderBy(i => i.Value.Weight)
+                .Take(k).Select(i => i.Value.Value).ToList();
+
+            var confidences = listOfNearestDistanseDecisions.GroupBy(x => x)
+                 .ToDictionary(g => g.Key, g => g.Count());
+
+            int maxConfidence = confidences.Max(i => i.Value);
+
+            var nearestDecisions = confidences.Where(i => i.Value == maxConfidence).Select(i=>i.Key).ToList();
+
+
+            if (nearestDecisions.Count() == 1)
+            {
+                return nearestDecisions.FirstOrDefault();
+            }
+            else
+            {
+                Random rnd = new Random();
+                int r = rnd.Next(nearestDecisions.Count());
+                return nearestDecisions[r];
+            }
+        }
+
+
+
+
+
+
+
+
+        #endregion
+
+    }
+
+    public struct KNNValuePair
+    {
+        public string Value;
+        public double Weight;
     }
 }

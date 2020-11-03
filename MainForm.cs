@@ -23,14 +23,6 @@ namespace SWD
             dataGridView1.Refresh();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                Operator.LoadData(openFileDialog1.FileName);
-                RefreshTable();
-            }
-        }
 
         private void zamianaDanychTekstowychNaNumeryczneToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -113,6 +105,41 @@ namespace SWD
         private void zmienneDyskretneToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DiscretizeHistogram form = new DiscretizeHistogram();
+            form.Show();
+        }
+
+        private void klasyfikujToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            KNNClasifications clasifications = new KNNClasifications();
+            if(clasifications.ShowDialog() == DialogResult.OK)
+            {
+                Operator.KNNClasifications(dataGridView1.SelectedRows[0].Index, clasifications.K, clasifications.Metric);
+                RefreshTable();
+            }
+        }
+
+        private void withColumnNamesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Operator.LoadData(openFileDialog1.FileName);
+                RefreshTable();
+            }
+        }
+
+        private void withoutColumnNamesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Operator.LoadData(openFileDialog1.FileName,true);
+                RefreshTable();
+            }
+        }
+
+        private void ocenaWartościKlasyfikacjiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CompareKNN form = new CompareKNN();
             form.Show();
         }
     }
