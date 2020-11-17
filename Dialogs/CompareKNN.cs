@@ -17,8 +17,8 @@ namespace SWD.Dialogs
         {
             InitializeComponent();
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
-
-            for(int i = 1; i < 4; i++)
+            Operator.InverseCovarianceMatrix = null;
+            for(int i = 1; i < 5; i++)
             {
                 List<Dictionary<int, KNNValuePair>> allDistanses = new List<Dictionary<int, KNNValuePair>>();
                 for (int a = 0; a < Operator.Dt.Rows.Count; a++)
@@ -55,6 +55,9 @@ namespace SWD.Dialogs
                         break;
                     case MetricsEnum.Manhattan:
                         name = "Manhattan";
+                        break;
+                    case MetricsEnum.Mahalanobis:
+                        name = "Mahalanobis";
                         break;
                 }
 

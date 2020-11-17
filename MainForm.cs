@@ -39,7 +39,23 @@ namespace SWD
             NormalizeData form = new NormalizeData();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Operator.NormalizeData(form.ColumnName);
+                if (form.AllColumnsAndChange)
+                {
+                    foreach(var col in Operator.GetRealColumns())
+                    {
+
+                        if(Operator.GetColumnsWithoutLast().Any(i=>i == col))
+                        {
+                            Operator.NormalizeData(col, true);
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    Operator.NormalizeData(form.ColumnName);
+                }
+                
                 RefreshTable();
             }
         }

@@ -30,19 +30,19 @@
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.K = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Euklides = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Manhattan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Czebyszew = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.Mahalanobis = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -55,13 +55,26 @@
             this.panel1.Size = new System.Drawing.Size(1142, 601);
             this.panel1.TabIndex = 0;
             // 
+            // chart1
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(717, 0);
+            this.chart1.Name = "chart1";
+            this.chart1.Size = new System.Drawing.Size(425, 601);
+            this.chart1.TabIndex = 1;
+            this.chart1.Text = "chart1";
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.dataGridView1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(730, 601);
+            this.panel2.Size = new System.Drawing.Size(717, 601);
             this.panel2.TabIndex = 0;
             // 
             // dataGridView1
@@ -71,13 +84,14 @@
             this.K,
             this.Euklides,
             this.Manhattan,
-            this.Czebyszew});
+            this.Czebyszew,
+            this.Mahalanobis});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(730, 601);
+            this.dataGridView1.Size = new System.Drawing.Size(717, 601);
             this.dataGridView1.TabIndex = 0;
             // 
             // K
@@ -85,45 +99,30 @@
             this.K.HeaderText = "K";
             this.K.MinimumWidth = 6;
             this.K.Name = "K";
-            this.K.Width = 125;
             // 
             // Euklides
             // 
             this.Euklides.HeaderText = "Euklides";
             this.Euklides.MinimumWidth = 6;
             this.Euklides.Name = "Euklides";
-            this.Euklides.Width = 125;
             // 
             // Manhattan
             // 
             this.Manhattan.HeaderText = "Manhattan";
             this.Manhattan.MinimumWidth = 6;
             this.Manhattan.Name = "Manhattan";
-            this.Manhattan.Width = 125;
             // 
             // Czebyszew
             // 
             this.Czebyszew.HeaderText = "Czebyszew";
             this.Czebyszew.MinimumWidth = 6;
             this.Czebyszew.Name = "Czebyszew";
-            this.Czebyszew.Width = 125;
             // 
-            // chart1
+            // Mahalanobis
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(730, 0);
-            this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(412, 601);
-            this.chart1.TabIndex = 1;
-            this.chart1.Text = "chart1";
+            this.Mahalanobis.HeaderText = "Mahalanobis";
+            this.Mahalanobis.MinimumWidth = 6;
+            this.Mahalanobis.Name = "Mahalanobis";
             // 
             // CompareKNN
             // 
@@ -134,9 +133,9 @@
             this.Name = "CompareKNN";
             this.Text = "CompareKNN";
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -151,5 +150,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Euklides;
         private System.Windows.Forms.DataGridViewTextBoxColumn Manhattan;
         private System.Windows.Forms.DataGridViewTextBoxColumn Czebyszew;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Mahalanobis;
     }
 }

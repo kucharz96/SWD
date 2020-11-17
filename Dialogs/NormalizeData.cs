@@ -21,6 +21,14 @@ namespace SWD.Dialogs
             }
         }
 
+        public bool AllColumnsAndChange
+        {
+            get
+            {
+                return checkBox1.Checked;
+            }
+        }
+
 
         public NormalizeData()
         {

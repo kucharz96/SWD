@@ -10,6 +10,7 @@ namespace SWD
     {
         Euclides = 1,
         Manhattan = 2,
-        Czebyszew = 3
+        Czebyszew = 3,
+        Mahalanobis = 4
     }
 }

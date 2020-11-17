@@ -5,12 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Accord.Math;
+using Accord.Math.Distances;
+using Accord.Statistics;
+
 
 namespace SWD
 {
     public class Operator
     {
         public static DataTable Dt = new DataTable();
+
+
+        public static double[,] InverseCovarianceMatrix = null;
 
         #region HelpersMethod
 
@@ -24,6 +31,8 @@ namespace SWD
                     return EuclidesMetrics(row, rowToCount);
                 case MetricsEnum.Czebyszew:
                     return CzebyszewMetrics(row, rowToCount);
+                case MetricsEnum.Mahalanobis:
+                    return MahalanobisMetrics(row, rowToCount);
                 default:
                     throw new NotImplementedException();
             }
@@ -182,19 +191,30 @@ namespace SWD
 
         }
 
-        public static void NormalizeData(string columnName)
+        public static void NormalizeData(string columnName, bool noAddCol = false)
         {
             var sd = CalculateStandardDeviation(columnName);
             var avg = Dt
               .AsEnumerable()
               .Select(row => Convert.ToDouble(row[columnName])).Average();
-            string newNameCol = columnName + "_nd";
-            Dt.Columns.Add(newNameCol);
+            string newNameCol;
+            if (noAddCol)
+            {
+                newNameCol = columnName;
+            }
+            else
+            {
+                newNameCol = columnName + "_nd";
+                Dt.Columns.Add(newNameCol);
+            }
+             
             foreach (DataRow row in Dt.Rows)
             {
                 double val = Convert.ToDouble(row[columnName]);
                 double newVal = (val - avg) / sd;
-
+                if (double.IsNaN(newVal)){
+                    newVal = 0;
+                }
                 row[newNameCol] = newVal;
             }
         }
@@ -312,14 +332,59 @@ namespace SWD
             return metrics;
         }
 
+        public static double MahalanobisMetrics(int row,int rowToCount)
+        {
+            var columns = GetColumnsWithoutLast();
+            if (InverseCovarianceMatrix == null)
+            {
+                var matrix = new double[Dt.Rows.Count, columns.Count];
+
+                for(int rowC =0; rowC< Dt.Rows.Count; rowC++)
+                {
+
+                    for(int colC = 0; colC < columns.Count; colC++)
+                    {
+                        matrix[rowC,colC] = Convert.ToDouble(Dt.Rows[rowC][colC]);
+                    }
+                }
+                var covarianceMatrix = matrix.Covariance();
+
+                try
+                {
+                    InverseCovarianceMatrix = covarianceMatrix.Inverse();
+                }
+                catch
+                {
+                    InverseCovarianceMatrix = covarianceMatrix.PseudoInverse();
+                }
+
+
+                
+            }
+
+
+
+            
+            double[] xValues = new double[columns.Count];
+            double[] yValues = new double[columns.Count];
+            for (int a = 0; a < columns.Count; a++) 
+            {
+                double x = Convert.ToDouble(Dt.Rows[row][a]);
+                double y = Convert.ToDouble(Dt.Rows[rowToCount][a]);
+                xValues[a] = x;
+                yValues[a] = y;
+
+            }
 
 
 
 
 
+            return Mahalanobis.FromPrecisionMatrix(InverseCovarianceMatrix).Distance(xValues, yValues);
 
 
 
+        }
 
 
 
@@ -354,6 +419,7 @@ namespace SWD
 
         public static void KNNClasifications(int currRow, int k, MetricsEnum metricsEnum)
         {
+            InverseCovarianceMatrix = null;
             var distance = KNNClasificationDistances(currRow, metricsEnum);
             string newVariable = KNNPredictVariable(distance, k);
             Dt.Rows[currRow][Dt.Columns[Dt.Columns.Count - 1]] = newVariable;
