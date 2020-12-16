@@ -43,7 +43,13 @@ namespace SWD
         public static List<string> GetColumnsWithoutLast()
         {
             List<string> columns = new List<string>();
-            for (int col = 0; col < Dt.Columns.Count-1; col++)
+            int diff =
+                Dt.Columns
+                .Cast<DataColumn>()
+                .Where(i => i.ColumnName.Contains("kmean")) 
+                .Count() + 1;
+
+            for (int col = 0; col < Dt.Columns.Count-diff; col++)
             {
                
                columns.Add(Dt.Columns[col].ColumnName);
@@ -412,7 +418,6 @@ namespace SWD
 
         #endregion
 
-
         #region KNNClasification
 
 
@@ -481,10 +486,149 @@ namespace SWD
 
         #endregion
 
+
+        #region KMean
+
+        public static List<KNNValuePair> KMeanGroup(MetricsEnum metricsEnum, int k)
+        {
+            List<KNNValuePair> distToMeans = new List<KNNValuePair>();
+            InverseCovarianceMatrix = null;
+            var columns = GetColumnsWithoutLast();
+            string colName = "kmean_" + k +"_" + metricsEnum.ToString();
+            Dt.Columns.Add(colName);
+            List<Dictionary<string, double>> tempMeans = new List<Dictionary<string, double>>();
+            //wybór losowych punktów (tymczasowe)
+            for (int a = 0; a < k; a++)
+            {
+                DataRow randRow = Dt.NewRow();
+                var dict = new Dictionary<string, double>();
+                foreach (var column in columns)
+                {
+                    var min = Dt
+                            .AsEnumerable()
+                            .Select(row => Convert.ToDouble(row[column])).ToList().Min();
+                    var max = Dt
+                            .AsEnumerable()
+                            .Select(row => Convert.ToDouble(row[column])).ToList().Max();
+                    Random rng = new Random(a);
+                    dict.Add(column, 0);
+                    
+                    var rngNumber = rng.NextDouble();
+                    randRow[column] = rngNumber * (max - min) + min;
+
+                }
+                tempMeans.Add(dict);
+                randRow[colName] = (a + 1);
+                Dt.Rows.Add(randRow);
+            }
+
+
+            while (!CompareKMeans(tempMeans, k))
+            {
+                distToMeans = new List<KNNValuePair>();
+                FillMeansTemp(tempMeans, k);
+                //szacowanie nowej klasy
+
+                for (int a = 0; a < Dt.Rows.Count - k; a++)
+                {
+                    Dictionary<int, double> distances = new Dictionary<int, double>();
+                    for (int b = Dt.Rows.Count - k; b < Dt.Rows.Count; b++)
+                    {
+                        distances.Add(b, CalculateMetrics(b, a, metricsEnum));
+                    }
+
+                    var minMean = distances.Min(i => i.Value);
+                    var indexMean = distances.Where(i => i.Value == minMean).FirstOrDefault().Key;
+                    Dt.Rows[a][colName] = Dt.Rows[indexMean][colName];
+
+                    distToMeans.Add(new KNNValuePair { Value = (string)Dt.Rows[indexMean][colName], Weight = minMean });
+
+                }
+                //nowa średnia
+                for (int b = Dt.Rows.Count - k; b < Dt.Rows.Count; b++)
+                {
+                    foreach (var column in GetColumnsWithoutLast())
+                    {
+                        var avg = Dt.Rows.Cast<DataRow>()
+                        .Take(Dt.Rows.Count - k)
+                        .Where(i => i[colName] == Dt.Rows[b][colName]);
+
+                        if (avg.Count() == 0)
+                        {
+                            Dt.Rows[b][column] = 0;
+                        }
+                        else
+                        {
+                            Dt.Rows[b][column] = avg
+                                .Select(row => Convert.ToDouble(row[column]))
+                                .Average();
+                        }
+
+
+
+
+                    }
+                }
+
+
+
+
+            }
+            //usuniecie zbędnych kolumn
+            for (int a = 0; a < k; a++)
+            {
+                Dt.Rows.RemoveAt(Dt.Rows.Count - 1);
+            }
+
+
+            return distToMeans;
+
+        }
+
+
+
+
+        public static bool CompareKMeans(List<Dictionary<string, double>> current, int k)
+        {
+            int counter = 0;
+            for(int a = Dt.Rows.Count - k;a< Dt.Rows.Count; a++)
+            {
+                foreach(var col in GetColumnsWithoutLast())
+                {
+                    if(current[counter][col] != Convert.ToDouble(Dt.Rows[a][col]))
+                    {
+                        return false;
+                    }
+                }
+                counter++;
+            }
+            return true;
+        }
+
+
+        public static void FillMeansTemp(List<Dictionary<string, double>> current, int k)
+        {
+            int counter = 0;
+            for (int a = Dt.Rows.Count - k; a < Dt.Rows.Count; a++)
+            {
+                foreach (var col in GetColumnsWithoutLast())
+                {
+                    current[counter][col] = Convert.ToDouble(Dt.Rows[a][col]);
+                    
+
+       
+                }
+                counter++;
+            }
+
+        }
+
+        #endregion
+
     }
 
     public struct KNNValuePair
-    {
+    { 
         public string Value;
         public double Weight;
     }

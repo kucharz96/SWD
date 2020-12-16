@@ -49,6 +49,10 @@
             this.kNNToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.klasyfikujToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ocenaWartościKlasyfikacjiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grupowanieKToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grupujToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.macierzPomyłekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.znajdzOptymalneKlastryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
@@ -81,7 +85,7 @@
             this.withColumnNamesToolStripMenuItem,
             this.withoutColumnNamesToolStripMenuItem});
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(162, 26);
             this.openToolStripMenuItem.Text = "Open file...";
             // 
             // withColumnNamesToolStripMenuItem
@@ -109,7 +113,8 @@
             this.zmianaPrzedziałuWartościToolStripMenuItem,
             this.wykres2DToolStripMenuItem,
             this.histogramToolStripMenuItem,
-            this.kNNToolStripMenuItem});
+            this.kNNToolStripMenuItem,
+            this.grupowanieKToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -225,6 +230,37 @@
             this.ocenaWartościKlasyfikacjiToolStripMenuItem.Text = "Ocena wartości klasyfikacji";
             this.ocenaWartościKlasyfikacjiToolStripMenuItem.Click += new System.EventHandler(this.ocenaWartościKlasyfikacjiToolStripMenuItem_Click);
             // 
+            // grupowanieKToolStripMenuItem
+            // 
+            this.grupowanieKToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.grupujToolStripMenuItem,
+            this.macierzPomyłekToolStripMenuItem,
+            this.znajdzOptymalneKlastryToolStripMenuItem});
+            this.grupowanieKToolStripMenuItem.Name = "grupowanieKToolStripMenuItem";
+            this.grupowanieKToolStripMenuItem.Size = new System.Drawing.Size(381, 26);
+            this.grupowanieKToolStripMenuItem.Text = "Grupowanie K-średnich";
+            // 
+            // grupujToolStripMenuItem
+            // 
+            this.grupujToolStripMenuItem.Name = "grupujToolStripMenuItem";
+            this.grupujToolStripMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.grupujToolStripMenuItem.Text = "Grupuj";
+            this.grupujToolStripMenuItem.Click += new System.EventHandler(this.grupujToolStripMenuItem_Click);
+            // 
+            // macierzPomyłekToolStripMenuItem
+            // 
+            this.macierzPomyłekToolStripMenuItem.Name = "macierzPomyłekToolStripMenuItem";
+            this.macierzPomyłekToolStripMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.macierzPomyłekToolStripMenuItem.Text = "Macierz pomyłek";
+            this.macierzPomyłekToolStripMenuItem.Click += new System.EventHandler(this.macierzPomyłekToolStripMenuItem_Click);
+            // 
+            // znajdzOptymalneKlastryToolStripMenuItem
+            // 
+            this.znajdzOptymalneKlastryToolStripMenuItem.Name = "znajdzOptymalneKlastryToolStripMenuItem";
+            this.znajdzOptymalneKlastryToolStripMenuItem.Size = new System.Drawing.Size(258, 26);
+            this.znajdzOptymalneKlastryToolStripMenuItem.Text = "Znajdz optymalne klastry";
+            this.znajdzOptymalneKlastryToolStripMenuItem.Click += new System.EventHandler(this.znajdzOptymalneKlastryToolStripMenuItem_Click);
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
@@ -239,6 +275,7 @@
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.Size = new System.Drawing.Size(800, 422);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyUp);
             // 
             // MainForm
             // 
@@ -283,6 +320,10 @@
         private System.Windows.Forms.ToolStripMenuItem ocenaWartościKlasyfikacjiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem withColumnNamesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem withoutColumnNamesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem grupowanieKToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem grupujToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem macierzPomyłekToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem znajdzOptymalneKlastryToolStripMenuItem;
     }
 }
 

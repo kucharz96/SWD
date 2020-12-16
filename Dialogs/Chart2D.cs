@@ -19,7 +19,7 @@ namespace SWD.Dialogs
             InitializeComponent();
             comboBox1.DataSource = Operator.GetRealColumns();
             comboBox2.DataSource = Operator.GetRealColumns();
-            comboBox4.DataSource = Operator.GetStringColumns();
+            comboBox4.DataSource = Operator.Dt.Columns.Cast<DataColumn>().Select(i => i.ColumnName).ToList();
         }
 
 
@@ -30,13 +30,14 @@ namespace SWD.Dialogs
 
             List<string> allValuesFromColumn = Operator.Dt
                 .AsEnumerable()
-                .Select(row => row.Field<string>((string)comboBox4.SelectedItem)).Distinct().ToList();
+                .Select(row => row.Field<string>((string)comboBox4.SelectedItem)).Distinct().OrderBy(i=>i).ToList();
             foreach (string col in allValuesFromColumn)
             {
                 Series s = chart1.Series.Add(col);
                 s.ChartType = SeriesChartType.Point;
                 s.MarkerStyle = MarkerStyle.Circle;
             }
+            chart1.Series.OrderBy(i => i.Name);
             chart1.ApplyPaletteColors();
 
             if (comboBox1.SelectedItem != null || comboBox2.SelectedItem != null)

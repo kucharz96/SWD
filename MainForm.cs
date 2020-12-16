@@ -158,5 +158,41 @@ namespace SWD
             CompareKNN form = new CompareKNN();
             form.Show();
         }
+
+        private void grupujToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            KMean clasifications = new KMean();
+            if (clasifications.ShowDialog() == DialogResult.OK)
+            {
+                Operator.KMeanGroup(clasifications.Metric,clasifications.K);
+                RefreshTable();
+            }
+        }
+
+        private void dataGridView1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Delete)
+            {
+                foreach(var cell in dataGridView1.SelectedCells.Cast<DataGridViewTextBoxCell>())
+                {
+                    Operator.Dt.Columns.RemoveAt(cell.ColumnIndex);
+                }
+                RefreshTable();
+            }
+        }
+
+        private void macierzPomyłekToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfusionMatrix form = new ConfusionMatrix();
+            form.Show();
+        }
+
+        private void znajdzOptymalneKlastryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            KMeanOptimum form = new KMeanOptimum();
+            form.Show();
+        }
+
+
     }
 }
