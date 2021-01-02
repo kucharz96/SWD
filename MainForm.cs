@@ -91,7 +91,7 @@ namespace SWD
             DiscretizeData form = new DiscretizeData();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Operator.DiscretizeData(form.ColumnName, form.SectionNumber);
+                Operator.DiscretizeData(form.ColumnName, form.SectionNumber,form.AllColumns);
                 RefreshTable();
             }
         }
@@ -134,6 +134,8 @@ namespace SWD
                 RefreshTable();
             }
         }
+
+
 
         private void withColumnNamesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -193,6 +195,34 @@ namespace SWD
             form.Show();
         }
 
+        private void budujDrzewoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            Operator.BeginBulidTree();
+            Cursor.Current = Cursors.Default;
+        }
 
+        private void klasyfikujToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+            Operator.DecisionTreeClasify(dataGridView1.SelectedRows[0].Index);
+            RefreshTable();
+            
+        }
+
+        private void jakośćLeaveoneoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            double quality = Operator.DecisionTreeQuality();
+            var result = MessageBox.Show("Jakość wynosi: " + quality, "Jakość Leave-one-out",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+
+        }
+
+        private void wektoryBinarneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WektoryBinarne wektory = new WektoryBinarne();
+            wektory.Show();
+        }
     }
 }

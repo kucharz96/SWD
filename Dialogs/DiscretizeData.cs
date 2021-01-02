@@ -20,6 +20,13 @@ namespace SWD.Dialogs
                 return comboBox1.SelectedValue.ToString();
             }
         }
+        public bool AllColumns
+        {
+            get
+            {
+                return checkBox1.Checked;
+            }
+        }
 
         public int SectionNumber
         {

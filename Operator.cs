@@ -19,9 +19,12 @@ namespace SWD
 
         public static double[,] InverseCovarianceMatrix = null;
 
+        public static DecisionTreeNode DecisionTreeRoot;
+
+
         #region HelpersMethod
 
-        public static double CalculateMetrics(int row, int rowToCount, MetricsEnum metricsEnum)  
+        public static double CalculateMetrics(int row, int rowToCount, MetricsEnum metricsEnum)
         {
             switch (metricsEnum)
             {
@@ -46,14 +49,14 @@ namespace SWD
             int diff =
                 Dt.Columns
                 .Cast<DataColumn>()
-                .Where(i => i.ColumnName.Contains("kmean")) 
+                .Where(i => i.ColumnName.Contains("kmean"))
                 .Count() + 1;
 
-            for (int col = 0; col < Dt.Columns.Count-diff; col++)
+            for (int col = 0; col < Dt.Columns.Count - diff; col++)
             {
-               
-               columns.Add(Dt.Columns[col].ColumnName);
-                
+
+                columns.Add(Dt.Columns[col].ColumnName);
+
             }
             return columns;
         }
@@ -94,7 +97,7 @@ namespace SWD
             List<string> stringColumns = new List<string>();
             for (int col = 0; col < Dt.Columns.Count; col++)
             {
-                if (!double.TryParse((string)Dt.Rows[0][col], out double a) || col == Dt.Columns.Count-1)
+                if (!double.TryParse((string)Dt.Rows[0][col], out double a) || col == Dt.Columns.Count - 1)
                 {
                     stringColumns.Add(Dt.Columns[col].ColumnName);
                 }
@@ -126,7 +129,7 @@ namespace SWD
         #endregion
 
         #region BasicOperations
-        public static void LoadData(string filePath , bool withoutColumn = false)
+        public static void LoadData(string filePath, bool withoutColumn = false)
         {
             Dt = new DataTable();
             System.IO.StreamReader file = new System.IO.StreamReader(filePath);
@@ -149,7 +152,7 @@ namespace SWD
 
                         for (int i = 0; i < values.Length; i++)
                         {
-                            dr[i] = values[i].Replace('.',',');
+                            dr[i] = values[i].Replace('.', ',');
                         }
                         Dt.Rows.Add(dr);
 
@@ -213,40 +216,105 @@ namespace SWD
                 newNameCol = columnName + "_nd";
                 Dt.Columns.Add(newNameCol);
             }
-             
+
             foreach (DataRow row in Dt.Rows)
             {
                 double val = Convert.ToDouble(row[columnName]);
                 double newVal = (val - avg) / sd;
-                if (double.IsNaN(newVal)){
+                if (double.IsNaN(newVal)) {
                     newVal = 0;
                 }
                 row[newNameCol] = newVal;
             }
         }
 
-        public static void DiscretizeData(string columnName, int sections)
+        public static void DiscretizeData(string columnName, int sections,bool allColumns)
         {
-            double min = GetMinValueFormColumn(columnName);
-            double max = GetMaxValueFormColumn(columnName);
-            double diff = (max - min) / sections;
-            double pom = min;
-            string newNameCol = columnName + "_dd";
-            Dt.Columns.Add(newNameCol);
-            for (int counter = 1; pom < max; counter++)
+            if(allColumns == false)
             {
-                foreach (DataRow row in Dt.Rows)
+                double min = GetMinValueFormColumn(columnName);
+                double max = GetMaxValueFormColumn(columnName);
+                double diff = (max - min) / sections;
+                double pom = min;
+                string newNameCol = columnName + "_dd";
+                Dt.Columns.Add(newNameCol);
+                List<int> changedIndex = new List<int>();
+                for (int counter = 1; pom < max; counter++)
                 {
-                    double val = Convert.ToDouble(row[columnName]);
-                    if (((val >= pom && val < pom + diff)) || ((pom + diff * 2) > max && val == max))
+                    int count = 0;
+                    foreach (DataRow row in Dt.Rows)
                     {
-                        row[newNameCol] = counter;
+                        if (changedIndex.Contains(count))
+                        {
+                            count++;
+                            continue;
+                        }
+                        double val = Convert.ToDouble(row[columnName]);
+                        //wyjatek w przypadku ostatniej czesci i duzych ulamkow
+                        if (counter > sections)
+                        {
+                            if(val == max)
+                            {
+                                row[newNameCol] = sections;
+                            }
+                        }
+                        else
+                        {
+                            
+                            if (((val >= pom && val < pom + diff)) || ((pom + diff * 2) > max && val == max))
+                            {
+                                row[newNameCol] = counter;
+                                changedIndex.Add(count);
+                            }
+                        }
+                        count++;
 
                     }
-
-
+                    pom = pom + diff;
                 }
-                pom = pom + diff;
+            }
+            else
+            {
+                foreach(var column in GetColumnsWithoutLast())
+                {
+                    double min = GetMinValueFormColumn(column);
+                    double max = GetMaxValueFormColumn(column);
+                    double diff = Math.Round(((max - min) / sections),5);
+                    double pom = min;
+                    List<int> changedIndex = new List<int>();
+                    for (int counter = 1; pom < max; counter++)
+                    {
+                        int count = 0;
+                        foreach (DataRow row in Dt.Rows)
+                        {
+                            if (changedIndex.Contains(count))
+                            {
+                                count++;
+                                continue;
+                                
+                            }
+                            double val = Convert.ToDouble(row[column]);
+                            //wyjatek w przypadku ostatniej czesci i duzych ulamkow
+                            if (counter > sections)
+                            {
+                                if (val == max)
+                                {
+                                    row[column] = sections;
+                                }
+                            }
+                            else
+                            {
+                                if (((val >= pom && val < pom + diff)) || ((pom + diff * 2) > max && val == max))
+                                {
+                                    row[column] = counter;
+                                    changedIndex.Add(count);
+                                }
+                            }
+                            count++;
+                        }
+                        pom = pom + diff;
+                    }
+                }
             }
 
         }
@@ -307,10 +375,10 @@ namespace SWD
 
         #region Metrics
 
-        public static double EuclidesMetrics(int row,int rowToCount)
+        public static double EuclidesMetrics(int row, int rowToCount)
         {
             double metrics = 0;
-            foreach(string column in GetColumnsWithoutLast())
+            foreach (string column in GetColumnsWithoutLast())
             {
                 var aaa = Dt.Rows[row][column];
                 double firstVal = Convert.ToDouble(Dt.Rows[row][column]);
@@ -319,7 +387,7 @@ namespace SWD
                 metrics += Math.Pow(firstVal - secondVal, 2);
 
             }
-            
+
             return Math.Sqrt(metrics);
         }
 
@@ -338,19 +406,19 @@ namespace SWD
             return metrics;
         }
 
-        public static double MahalanobisMetrics(int row,int rowToCount)
+        public static double MahalanobisMetrics(int row, int rowToCount)
         {
             var columns = GetColumnsWithoutLast();
             if (InverseCovarianceMatrix == null)
             {
                 var matrix = new double[Dt.Rows.Count, columns.Count];
 
-                for(int rowC =0; rowC< Dt.Rows.Count; rowC++)
+                for (int rowC = 0; rowC < Dt.Rows.Count; rowC++)
                 {
 
-                    for(int colC = 0; colC < columns.Count; colC++)
+                    for (int colC = 0; colC < columns.Count; colC++)
                     {
-                        matrix[rowC,colC] = Convert.ToDouble(Dt.Rows[rowC][colC]);
+                        matrix[rowC, colC] = Convert.ToDouble(Dt.Rows[rowC][colC]);
                     }
                 }
                 var covarianceMatrix = matrix.Covariance();
@@ -365,15 +433,15 @@ namespace SWD
                 }
 
 
-                
+
             }
 
 
 
-            
+
             double[] xValues = new double[columns.Count];
             double[] yValues = new double[columns.Count];
-            for (int a = 0; a < columns.Count; a++) 
+            for (int a = 0; a < columns.Count; a++)
             {
                 double x = Convert.ToDouble(Dt.Rows[row][a]);
                 double y = Convert.ToDouble(Dt.Rows[rowToCount][a]);
@@ -401,7 +469,7 @@ namespace SWD
             {
                 double firstVal = Convert.ToDouble(Dt.Rows[row][column]);
                 double secondVal = Convert.ToDouble(Dt.Rows[rowToCount][column]);
-                
+
                 double diff = Math.Abs(firstVal - secondVal);
                 if (max < diff)
                 {
@@ -413,7 +481,7 @@ namespace SWD
             return max;
         }
 
-        
+
 
 
         #endregion
@@ -435,10 +503,10 @@ namespace SWD
 
         public static Dictionary<int, KNNValuePair> KNNClasificationDistances(int currRow, MetricsEnum metricsEnum)
         {
-            Dictionary<int,KNNValuePair> distanses = new Dictionary<int, KNNValuePair>();
-            for(int a=0;a<Dt.Rows.Count;a++)
+            Dictionary<int, KNNValuePair> distanses = new Dictionary<int, KNNValuePair>();
+            for (int a = 0; a < Dt.Rows.Count; a++)
             {
-                if(a != currRow)
+                if (a != currRow)
                 {
                     double metrics = CalculateMetrics(a, currRow, metricsEnum);
 
@@ -452,7 +520,7 @@ namespace SWD
         }
 
 
-        public static string KNNPredictVariable(Dictionary<int, KNNValuePair> distanses,int k)
+        public static string KNNPredictVariable(Dictionary<int, KNNValuePair> distanses, int k)
         {
             List<string> listOfNearestDistanseDecisions = distanses.OrderBy(i => i.Value.Weight)
                 .Take(k).Select(i => i.Value.Value).ToList();
@@ -462,7 +530,7 @@ namespace SWD
 
             int maxConfidence = confidences.Max(i => i.Value);
 
-            var nearestDecisions = confidences.Where(i => i.Value == maxConfidence).Select(i=>i.Key).ToList();
+            var nearestDecisions = confidences.Where(i => i.Value == maxConfidence).Select(i => i.Key).ToList();
 
 
             if (nearestDecisions.Count() == 1)
@@ -494,7 +562,7 @@ namespace SWD
             List<KNNValuePair> distToMeans = new List<KNNValuePair>();
             InverseCovarianceMatrix = null;
             var columns = GetColumnsWithoutLast();
-            string colName = "kmean_" + k +"_" + metricsEnum.ToString();
+            string colName = "kmean_" + k + "_" + metricsEnum.ToString();
             Dt.Columns.Add(colName);
             List<Dictionary<string, double>> tempMeans = new List<Dictionary<string, double>>();
             //wybór losowych punktów (tymczasowe)
@@ -512,7 +580,7 @@ namespace SWD
                             .Select(row => Convert.ToDouble(row[column])).ToList().Max();
                     Random rng = new Random(a);
                     dict.Add(column, 0);
-                    
+
                     var rngNumber = rng.NextDouble();
                     randRow[column] = rngNumber * (max - min) + min;
 
@@ -591,11 +659,11 @@ namespace SWD
         public static bool CompareKMeans(List<Dictionary<string, double>> current, int k)
         {
             int counter = 0;
-            for(int a = Dt.Rows.Count - k;a< Dt.Rows.Count; a++)
+            for (int a = Dt.Rows.Count - k; a < Dt.Rows.Count; a++)
             {
-                foreach(var col in GetColumnsWithoutLast())
+                foreach (var col in GetColumnsWithoutLast())
                 {
-                    if(current[counter][col] != Convert.ToDouble(Dt.Rows[a][col]))
+                    if (current[counter][col] != Convert.ToDouble(Dt.Rows[a][col]))
                     {
                         return false;
                     }
@@ -614,9 +682,9 @@ namespace SWD
                 foreach (var col in GetColumnsWithoutLast())
                 {
                     current[counter][col] = Convert.ToDouble(Dt.Rows[a][col]);
-                    
 
-       
+
+
                 }
                 counter++;
             }
@@ -625,11 +693,212 @@ namespace SWD
 
         #endregion
 
+        #region DecisionTree
+
+
+        public static void BeginBulidTree()
+        {
+            DecisionTreeRoot = new DecisionTreeNode();
+            BulidTree(DecisionTreeRoot, new Dictionary<string, string>(), Dt.Rows.Cast<DataRow>().ToList());
+
+        }
+
+
+        public static void BulidTree(DecisionTreeNode currentNode, Dictionary<string, string> searchedColumns, List<DataRow> rows)
+        {
+            List<DataRow> tempRows = new List<DataRow>(rows);
+            string decColumn = Dt.Columns[Dt.Columns.Count - 1].ColumnName;
+            var decisions = tempRows.Select(d => d.Field<string>(decColumn))
+                        .Distinct().ToList();
+            //Przefiltrowanie tablicy w zależności od poprzednich atrybutów
+
+            foreach (var data in searchedColumns)
+            {
+                tempRows = tempRows.Where(i => (string)i[data.Key] == data.Value).ToList();
+            }
+            //obliczanie I(X)
+            var decisionCount = tempRows
+                .GroupBy(row => row.Field<string>(decColumn)).ToDictionary(g => g.Key, g => g.Count());
+
+            NormalizeDictionary(decisionCount,decisions);
+            double iValue = CalculateGain(decisionCount);
+            //warunek stopu
+            if (iValue == 0)
+            {
+                var decision = decisionCount.Where(i => i.Value != 0).Select(i => i.Key).FirstOrDefault();
+                currentNode.Attribute = decision;
+                currentNode.IsDecision = true;
+                return;
+
+            }
+            else if(GetColumnsWithoutLast().Count == searchedColumns.Count)
+            {
+                var decision = decisionCount.Where(i => i.Value == decisionCount.Max(x=>x.Value)).Select(i => i.Key).FirstOrDefault();
+                currentNode.Attribute = decision;
+                currentNode.IsDecision = true;
+                return;
+            }
+            else
+            {
+                Dictionary<string, double> atrrGains = new Dictionary<string, double>();
+                //Wybór atrybutu
+                foreach (string column in GetColumnsWithoutLast().Where(i => !searchedColumns.Keys.Contains(i)))
+                {
+                    var values = rows.Select(d => d.Field<string>(column))
+                        .Distinct();
+                    List<GainData> gainWithTotalValues = new List<GainData>();
+                    foreach (var value in values)
+                    {
+                        var decisionCountForAttributes = tempRows
+                            .Where(i => (string)i[column] == value)
+                            .GroupBy(row => row.Field<string>(decColumn)).ToDictionary(g => g.Key, g => g.Count());
+                        NormalizeDictionary(decisionCountForAttributes,decisions);
+                        double maxCount = decisionCountForAttributes.Sum(i => i.Value);
+
+                        gainWithTotalValues.Add(new GainData
+                        {
+                            TotalValues = maxCount,
+                            Gain = CalculateGain(decisionCountForAttributes)
+                        });
+
+                    }
+
+                    double totalGain = 0;
+                    foreach(var val in gainWithTotalValues)
+                    {
+                        totalGain += (val.TotalValues / gainWithTotalValues.Sum(i => i.TotalValues)) * val.Gain;
+                    }
+                    totalGain = iValue - totalGain;
+                    atrrGains.Add(column, totalGain);
+
+                }
+                if(atrrGains.Count() == 0)
+                {
+
+                }
+                var bestAttribute = atrrGains.Where(i => i.Value == atrrGains.Max(x => x.Value)).FirstOrDefault().Key;
+                currentNode.Attribute = bestAttribute;
+                currentNode.IsDecision = false;
+                foreach(var value in rows.Select(d => d.Field<string>(bestAttribute))
+                        .Distinct())
+                {
+                    var tempSearched = new Dictionary<string,string>(searchedColumns);
+                    tempSearched.Add(bestAttribute, value);
+                    DecisionTreeNode child = new DecisionTreeNode();
+                    currentNode.LinkedNodes.Add(value, child);
+                    BulidTree(child, tempSearched, rows);
+                    
+
+                }
+
+
+
+
+            }
+
+
+
+
+
+        }
+
+
+
+
+        public static double DecisionTreeQuality()
+        {
+            double totalRows = Dt.Rows.Count;
+            double correctClasifyCount = 0;
+            int count = 0;
+            foreach(DataRow row in Dt.Rows)
+            {
+                var currentDataRows = Dt.Rows.Cast<DataRow>()
+                    .Where(i => i != row).ToList();
+
+                DecisionTreeRoot = new DecisionTreeNode();
+                BulidTree(DecisionTreeRoot, new Dictionary<string, string>(), currentDataRows);
+
+                if ((string)row[Dt.Columns[Dt.Columns.Count - 1]] == DecisionTreePredictClass(count))
+                {
+                    correctClasifyCount++;
+                }
+
+                count++;
+
+            }
+            return correctClasifyCount / totalRows;
+        }
+
+
+
+
+        public static void DecisionTreeClasify(int currRow)
+        {
+            Dt.Rows[currRow][Dt.Columns[Dt.Columns.Count - 1]] = DecisionTreePredictClass(currRow);
+        }
+
+
+
+        public static string DecisionTreePredictClass(int currRow)
+        {
+            DataRow currentRow = Dt.Rows[currRow];
+            string predict = DecisionTreeRecurentPredictSearch(DecisionTreeRoot, currentRow);
+            return predict;
+        }
+
+
+        public static string DecisionTreeRecurentPredictSearch(DecisionTreeNode node, DataRow row)
+        {
+            if (node.IsDecision)
+            {
+                return node.Attribute;
+            }
+            else
+            {
+                string value = (string)row[node.Attribute];
+                var link = node.LinkedNodes[value];
+                return DecisionTreeRecurentPredictSearch(link, row);
+            }
+        }
+
+        public static void NormalizeDictionary(Dictionary<string, int> values, List<string> decisions)
+        {
+            foreach(var dec in decisions)
+            {
+                if(!values.TryGetValue(dec,out int a))
+                {
+                    values.Add(dec, 0);
+                }
+            }
+        }
+            
+        public static double CalculateGain(Dictionary<string, int> values)
+        {
+            double iValue = 0;
+            double totalSum = values.Sum(i => i.Value);
+            foreach (var val in values.Values)
+            {
+                if(val != 0)
+                    iValue += (val / totalSum) * Math.Log((val / totalSum), 2);
+            }
+            return -iValue;
+        }
+
+
+        #endregion
+
     }
 
     public struct KNNValuePair
-    { 
+    {
         public string Value;
         public double Weight;
+    }
+
+
+    public struct GainData
+    {
+        public double TotalValues;
+        public double Gain;
     }
 }

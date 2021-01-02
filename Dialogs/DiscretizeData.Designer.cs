@@ -29,18 +29,20 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.numericUpDown1);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.button2);
@@ -50,15 +52,31 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(569, 174);
+            this.panel1.Size = new System.Drawing.Size(569, 205);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(16, 86);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown1.TabIndex = 5;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(127, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Liczba przedziałów";
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(400, 136);
+            this.button2.Location = new System.Drawing.Point(409, 167);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(76, 26);
             this.button2.TabIndex = 3;
@@ -68,7 +86,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(482, 136);
+            this.button1.Location = new System.Drawing.Point(491, 167);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 26);
             this.button1.TabIndex = 2;
@@ -92,27 +110,21 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Kolumna";
             // 
-            // label2
+            // checkBox1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 65);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(127, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Liczba przedziałów";
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(16, 86);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown1.TabIndex = 5;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(16, 125);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(241, 21);
+            this.checkBox1.TabIndex = 6;
+            this.checkBox1.Text = "Zastosuj do kolumn warunkowych";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // DiscretizeData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(569, 174);
+            this.ClientSize = new System.Drawing.Size(569, 205);
             this.Controls.Add(this.panel1);
             this.Name = "DiscretizeData";
             this.Text = "ChangeToNumber";
@@ -132,5 +144,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
